@@ -148,7 +148,7 @@ Agent nhận `NOT_FOUND` và trả lời lịch sự, **không bịa bất kỳ 
 - **Tổng số Test Cases đã chạy thành công:** **5 / 5** test cases (TC01 direct_query, TC02 single_tool_query, TC03 restock_order, TC04 multi_step_reasoning, TC05 edge_case_handling).
 - **Số lượt gọi Tool qua MCP Server chính xác:** **5** lượt (`inventory_query` × 3: SKU001, SKU002, SKU9999; `create_restock_order` × 2: SKU001/200/HIGH, SKU002/210/HIGH) — 100% đúng tool và đúng tham số so với `expected_behavior`.
 - **Tổng số sự kiện Waterfall Trace:** 10 sự kiện, tất cả mang nhãn `provider = gemini/gemini-3.5-flash`.
-- **Kết quả đẩy Repo nộp bài:** [ ] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
+- **Kết quả đẩy Repo nộp bài:** [x] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
 
 ### So sánh Chatbot Baseline (Cấp 2) vs ReAct Agent (Cấp 3) trên cùng bộ test
 
