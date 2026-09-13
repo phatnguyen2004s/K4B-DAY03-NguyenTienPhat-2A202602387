@@ -14,7 +14,7 @@ if sys.stdout.encoding != 'utf-8':
     except Exception:
         pass
 
-class MCPAcademicServer:
+class MCPInventoryServer:
     """
     Giả lập MCP Server tuân thủ chuẩn giao thức Model Context Protocol
     """
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     print("🔌 KIỂM THỬ ĐỘC LẬP MCP SERVER (store-inventory-mcp-server)")
     print("==========================================================")
     
-    server = MCPAcademicServer()
+    server = MCPInventoryServer()
     tools = server.list_tools()
     print(f"✅ Khởi tạo thành công MCP Server: {server.server_name} (Version: {server.version})")
     print(f"📦 Số lượng Tools công bố: {len(tools)}")

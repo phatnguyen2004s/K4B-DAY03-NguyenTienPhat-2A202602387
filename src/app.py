@@ -17,7 +17,7 @@ if sys.stdout.encoding != 'utf-8':
     except Exception:
         pass
 
-from mcp_server import MCPAcademicServer
+from mcp_server import MCPInventoryServer
 from prompts import (
     CHATBOT_BASELINE_PROMPT,
     REACT_AGENT_SYSTEM_PROMPT,
@@ -94,7 +94,7 @@ def summarize_observations(scratchpad: list) -> str:
     return "Tổng hợp kết quả từ các công cụ: " + " | ".join(parts)
 
 
-def run_react_agent(user_query: str, provider, mcp_server: MCPAcademicServer) -> list:
+def run_react_agent(user_query: str, provider, mcp_server: MCPInventoryServer) -> list:
     """
     [REACT AGENT LOOP - TASK 2.2] Thực thi vòng lặp Thought -> Action -> Observation với MCP Server
     - type == "text"      : LLM đưa ra Final Answer -> in kết luận và dừng vòng lặp.
@@ -239,7 +239,7 @@ if __name__ == "__main__":
     print("==========================================================")
     
     provider = get_llm_provider()
-    mcp_server = MCPAcademicServer()
+    mcp_server = MCPInventoryServer()
     
     print(f"🔌 LLM Provider: {provider.__class__.__name__}")
     print(f"🌐 MCP Server: {mcp_server.server_name}\n")
