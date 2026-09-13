@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Chào bạn, bạn có thể giới thiệu nguyên tắc cơ bản để quyết định ưu tiên nhập mặt hàng nào ở cửa hàng tiện lợi không?",
+    "expected_behavior": "Chatbot trả lời trực tiếp từ System Prompt (nguyên tắc chung về tốc độ tiêu thụ, số ngày tồn kho còn lại), không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Hãy tra cứu tình hình tồn kho và tốc độ tiêu thụ của mặt hàng SKU001.",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu, tự động phát sinh Tool Call 'inventory_query' với sku SKU001 và tổng hợp tồn kho, tốc độ bán, số ngày còn đủ bán.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "restock_order",
+    "question": "Tạo đơn nhập 200 đơn vị mặt hàng SKU001 với mức ưu tiên cao, giao ngày 15/09/2026.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'create_restock_order' với đúng sku SKU001, quantity 200, priority HIGH và delivery_date 15/09/2026.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Kiểm tra mặt hàng SKU002 còn đủ bán bao nhiêu ngày. Nếu dưới 3 ngày thì tạo đơn nhập gấp (ưu tiên cao) với số lượng đủ bán cho 7 ngày tới.",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct: gọi 'inventory_query' cho SKU002 trước, dựa vào Observation (tồn kho, tốc độ bán/ngày) tính số ngày còn hàng và lượng cần nhập, sau đó mới gọi 'create_restock_order' với priority HIGH.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Tra cứu tồn kho của mặt hàng SKU9999.",
+    "expected_behavior": "Agent nhận kết quả NOT_FOUND từ Tool 'inventory_query' và đưa ra phản hồi lịch sự, chính xác, không bịa đặt số liệu tồn kho.",
+    "complexity": "Medium"
+  }
+]

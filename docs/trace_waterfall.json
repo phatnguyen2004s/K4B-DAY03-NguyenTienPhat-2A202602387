@@ -1,29 +1,184 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
+    "query": "Chào bạn, bạn có thể giới thiệu nguyên tắc cơ bản để quyết định ưu tiên nhập mặt hàng nào ở cửa hàng tiện lợi không?",
     "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Chào bạn! Trong quản lý cửa hàng tiện lợi, việc quyết định ưu tiên nhập mặt hàng nào thường dựa trên các nguyên tắc cốt lõi sau đây để đảm bảo tối ưu hóa dòng vốn và tránh tình trạng đứt gãy chuỗi cung ứng (hết hàng để bán):\n\n### 1. Số ngày còn đủ bán (Days of Stock Left - DOS)\nĐây là chỉ số quan trọng nhất. Chỉ số này được tính bằng: \n$$\\text{Số ngày còn đủ bán} = \\frac{\\text{Số lượng tồn kho hiện tại}}{\\text{Tốc độ bán trung bình mỗi ngày}}$$\n*   **Ưu tiên CAO (HIGH):** Khi số ngày còn đủ bán thấp hơn thời gian nhà cung cấp giao hàng (Lead time), hoặc dưới ngưỡng an toàn tối thiểu (thường là dưới 3 ngày). Cần tạo đơn nhập gấp để tránh cháy hàng.\n*   **Ưu tiên TRUNG BÌNH (MEDIUM):** Khi lượng hàng còn đủ bán từ 3 đến 7 ngày.\n*   **Ưu tiên THẤP (LOW):** Khi lượng hàng còn đủ bán trên 7 ngày, chỉ nhập bổ sung định kỳ hoặc khi có chương trình khuyến mãi đặc biệt.\n\n### 2. Tốc độ tiêu thụ và Doanh thu (Phân tích ABC)\n*   **Nhóm A (Hàng bán chạy/Doanh thu cao):** Các mặt hàng như nước giải khát, mì ăn liền, khăn giấy, sữa... có tốc độ tiêu thụ rất nhanh. Nhóm này luôn được ưu tiên kiểm tra và nhập hàng liên tục vì chỉ cần thiếu hụt một ngày cũng gây tổn thất doanh thu lớn và làm giảm trải nghiệm khách hàng.\n*   **Nhóm B & C (Hàng bán chậm hơn):** Tần suất nhập hàng sẽ thưa hơn, ưu tiên thấp hơn.\n\n### 3. Thời gian giao hàng của Nhà cung cấp (Lead Time)\n*   Nếu một nhà cung cấp mất tới 5 ngày mới giao được hàng, cửa hàng phải ưu tiên lên đơn nhập sớm hơn so với nhà cung cấp chỉ mất 1 ngày để giao hàng.\n\n### 4. Tính mùa vụ và Chương trình khuyến mãi\n*   **Mùa vụ:** Ưu tiên nhập nhiều kem, nước giải khát vào mùa hè; nhập bánh kẹo, giỏ quà vào dịp Tết.\n*   **Khuyến mãi:** Khi có chương trình kích cầu hoặc chuẩn bị chạy chiến dịch marketing, mặt hàng đó sẽ được ưu tiên nhập với số lượng lớn hơn bình thường để chuẩn bị cho sức mua tăng đột biến.\n\n### 5. Thời hạn sử dụng (Expiry Date / Shelf Life)\n*   Đối với hàng tươi sống, thực phẩm ăn liền (bánh mì tươi, cơm nắm, sandwich) có hạn sử dụng ngắn (1-3 ngày), việc nhập hàng phải diễn ra hàng ngày với số lượng vừa đủ dựa trên dự báo chính xác để tránh lãng phí do hủy hàng hết hạn.\n\nHy vọng những nguyên tắc trên sẽ giúp bạn có cái nhìn tổng quan về cách tối ưu hóa danh mục nhập hàng! Nếu bạn cần kiểm tra tồn kho hoặc lên đơn nhập cho một mã hàng cụ thể nào tại cửa hàng, hãy cho tôi biết nhé.",
+    "latency_ms": 5042.93
   },
   {
     "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tra cứu tình hình tồn kho và tốc độ tiêu thụ của mặt hàng SKU001.",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini quyết định gọi công cụ 'inventory_query' với tham số: {\"sku\": \"SKU001\"}",
+    "tool_name": "inventory_query",
     "arguments": {
-      "student_id": "SV2026001"
+      "sku": "SKU001"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "sku": "SKU001",
+      "data": {
+        "product_name": "Nước suối Lavie 500ml",
+        "category": "Đồ uống",
+        "stock_quantity": 320,
+        "avg_daily_sales": 45,
+        "unit": "chai",
+        "unit_price": 6000,
+        "supplier": "Công ty Lavie Việt Nam",
+        "last_restock_date": "10/09/2026",
+        "days_of_stock_left": 7.1,
+        "restock_alert": false
+      }
+    },
+    "mcp_server": "store-inventory-mcp-server",
+    "latency_ms": 1620.38,
+    "tool_latency_ms": 0.09
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tra cứu tình hình tồn kho và tốc độ tiêu thụ của mặt hàng SKU001.",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
-    "latency_ms": 10.0
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Dựa trên kết quả tra cứu hệ thống, dưới đây là thông tin chi tiết về tình hình tồn kho và tốc độ tiêu thụ của mặt hàng **SKU001**:\n\n*   **Tên sản phẩm:** Nước suối Lavie 500ml (Danh mục: Đồ uống)\n*   **Số lượng tồn kho hiện tại:** 320 chai\n*   **Tốc độ tiêu thụ trung bình:** 45 chai/ngày\n*   **Số ngày còn đủ bán dự kiến:** ~7.1 ngày\n*   **Nhà cung cấp:** Công ty Lavie Việt Nam\n*   **Ngày nhập hàng gần nhất:** 10/09/2026\n*   **Trạng thái cảnh báo:** Bình thường (Chưa kích hoạt cảnh báo nhập hàng gấp - `restock_alert: false`).",
+    "latency_ms": 8327.68
+  },
+  {
+    "step": 1,
+    "query": "Tạo đơn nhập 200 đơn vị mặt hàng SKU001 với mức ưu tiên cao, giao ngày 15/09/2026.",
+    "action_type": "TOOL_EXECUTION",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini quyết định gọi công cụ 'create_restock_order' với tham số: {\"priority\": \"HIGH\", \"quantity\": 200, \"delivery_date\": \"15/09/2026\", \"sku\": \"SKU001\"}",
+    "tool_name": "create_restock_order",
+    "arguments": {
+      "priority": "HIGH",
+      "quantity": 200,
+      "delivery_date": "15/09/2026",
+      "sku": "SKU001"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "order_id": "PO-SKU001-20260913",
+      "sku": "SKU001",
+      "product_name": "Nước suối Lavie 500ml",
+      "quantity": 200,
+      "unit": "chai",
+      "priority": "HIGH",
+      "supplier": "Công ty Lavie Việt Nam",
+      "delivery_date": "15/09/2026",
+      "estimated_cost": 1200000,
+      "message": "Đã tạo đơn nhập PO-SKU001-20260913: 200 chai Nước suối Lavie 500ml (ưu tiên HIGH) từ Công ty Lavie Việt Nam, giao 15/09/2026."
+    },
+    "mcp_server": "store-inventory-mcp-server",
+    "latency_ms": 2503.91,
+    "tool_latency_ms": 0.12
+  },
+  {
+    "step": 2,
+    "query": "Tạo đơn nhập 200 đơn vị mặt hàng SKU001 với mức ưu tiên cao, giao ngày 15/09/2026.",
+    "action_type": "FINAL_ANSWER",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Đơn nhập hàng cho mặt hàng **SKU001** đã được tạo thành công với thông tin chi tiết như sau:\n\n* **Mã đơn hàng (Order ID):** PO-SKU001-20260913\n* **Tên sản phẩm:** Nước suối Lavie 500ml\n* **Số lượng:** 200 chai\n* **Mức ưu tiên:** HIGH (Cao)\n* **Nhà cung cấp:** Công ty Lavie Việt Nam\n* **Ngày giao hàng dự kiến:** 15/09/2026\n* **Chi phí ước tính:** 1.200.000 VND\n\nHệ thống đã ghi nhận đơn hàng này và sẽ thông báo cho nhà cung cấp để chuẩn bị giao hàng đúng hẹn.",
+    "latency_ms": 3063.68
+  },
+  {
+    "step": 1,
+    "query": "Kiểm tra mặt hàng SKU002 còn đủ bán bao nhiêu ngày. Nếu dưới 3 ngày thì tạo đơn nhập gấp (ưu tiên cao) với số lượng đủ bán cho 7 ngày tới.",
+    "action_type": "TOOL_EXECUTION",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini quyết định gọi công cụ 'inventory_query' với tham số: {\"sku\": \"SKU002\"}",
+    "tool_name": "inventory_query",
+    "arguments": {
+      "sku": "SKU002"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "sku": "SKU002",
+      "data": {
+        "product_name": "Mì ly Hảo Hảo tôm chua cay",
+        "category": "Thực phẩm ăn liền",
+        "stock_quantity": 40,
+        "avg_daily_sales": 30,
+        "unit": "ly",
+        "unit_price": 9000,
+        "supplier": "Acecook Việt Nam",
+        "last_restock_date": "05/09/2026",
+        "days_of_stock_left": 1.3,
+        "restock_alert": true
+      }
+    },
+    "mcp_server": "store-inventory-mcp-server",
+    "latency_ms": 2640.69,
+    "tool_latency_ms": 0.1
+  },
+  {
+    "step": 2,
+    "query": "Kiểm tra mặt hàng SKU002 còn đủ bán bao nhiêu ngày. Nếu dưới 3 ngày thì tạo đơn nhập gấp (ưu tiên cao) với số lượng đủ bán cho 7 ngày tới.",
+    "action_type": "TOOL_EXECUTION",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini quyết định gọi công cụ 'create_restock_order' với tham số: {\"sku\": \"SKU002\", \"quantity\": 210, \"priority\": \"HIGH\"}",
+    "tool_name": "create_restock_order",
+    "arguments": {
+      "sku": "SKU002",
+      "quantity": 210,
+      "priority": "HIGH"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "order_id": "PO-SKU002-20260913",
+      "sku": "SKU002",
+      "product_name": "Mì ly Hảo Hảo tôm chua cay",
+      "quantity": 210,
+      "unit": "ly",
+      "priority": "HIGH",
+      "supplier": "Acecook Việt Nam",
+      "delivery_date": "Sớm nhất có thể",
+      "estimated_cost": 1890000,
+      "message": "Đã tạo đơn nhập PO-SKU002-20260913: 210 ly Mì ly Hảo Hảo tôm chua cay (ưu tiên HIGH) từ Acecook Việt Nam, giao sớm nhất có thể."
+    },
+    "mcp_server": "store-inventory-mcp-server",
+    "latency_ms": 33316.14,
+    "tool_latency_ms": 0.11
+  },
+  {
+    "step": 3,
+    "query": "Kiểm tra mặt hàng SKU002 còn đủ bán bao nhiêu ngày. Nếu dưới 3 ngày thì tạo đơn nhập gấp (ưu tiên cao) với số lượng đủ bán cho 7 ngày tới.",
+    "action_type": "FINAL_ANSWER",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Dựa trên kết quả kiểm tra hệ thống, tôi xin báo cáo tình hình mặt hàng **Mì ly Hảo Hảo tôm chua cay (SKU002)** và tiến trình xử lý như sau:\n\n1. **Tình trạng tồn kho hiện tại:**\n   * **Số lượng tồn kho:** 40 ly.\n   * **Tốc độ tiêu thụ trung bình:** 30 ly/ngày.\n   * **Số ngày còn đủ bán:** **1.3 ngày** (thấp hơn ngưỡng tối thiểu là 3 ngày).\n\n2. **Xử lý tạo đơn nhập hàng:**\n   * Vì số ngày còn đủ bán dưới 3 ngày, hệ thống đã tự động tạo đơn nhập hàng gấp (ưu tiên **HIGH**) để đảm bảo lượng hàng bán trong **7 ngày** tới.\n   * **Số lượng nhập:** 30 ly/ngày × 7 ngày = **210 ly**.\n   * **Thông tin đơn hàng:**\n     * **Mã đơn nhập:** `PO-SKU002-20260913`\n     * **Nhà cung cấp:** Acecook Việt Nam\n     * **Chi phí ước tính:** 1,890,000 VND\n     * **Thời gian giao hàng dự kiến:** Sớm nhất có thể.\n\nĐơn hàng đã được gửi thành công tới nhà cung cấp để xử lý gấp!",
+    "latency_ms": 6512.52
+  },
+  {
+    "step": 1,
+    "query": "Tra cứu tồn kho của mặt hàng SKU9999.",
+    "action_type": "TOOL_EXECUTION",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini quyết định gọi công cụ 'inventory_query' với tham số: {\"sku\": \"SKU9999\"}",
+    "tool_name": "inventory_query",
+    "arguments": {
+      "sku": "SKU9999"
+    },
+    "observation": {
+      "status": "NOT_FOUND",
+      "message": "Không tìm thấy mặt hàng có mã 'SKU9999' trong hệ thống tồn kho"
+    },
+    "mcp_server": "store-inventory-mcp-server",
+    "latency_ms": 1443.62,
+    "tool_latency_ms": 0.05
+  },
+  {
+    "step": 2,
+    "query": "Tra cứu tồn kho của mặt hàng SKU9999.",
+    "action_type": "FINAL_ANSWER",
+    "provider": "gemini/gemini-3.5-flash",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Rất tiếc, hệ thống không tìm thấy mặt hàng nào có mã **SKU9999** trong cơ sở dữ liệu tồn kho. \n\nBạn vui lòng kiểm tra lại mã SKU xem đã chính xác chưa nhé!",
+    "latency_ms": 2178.11
   }
 ]
